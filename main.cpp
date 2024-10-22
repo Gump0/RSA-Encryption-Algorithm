@@ -70,13 +70,13 @@ unsigned KeyGen::Calculate_nphi(){
 
 unsigned KeyGen::Calculate_e(){
     unsigned i = 2;
-    while(gcd(i, phi_n) != 1)
-        i++;
-    e = i;
-
-    if(e <= phi_n){
-        throw (runtime_error("ERROR: e value is greater or equal to phi_n"));
+    while(i < phi_n){
+        if(gcd(i, phi_n) == 1)
+        break;
+    else i++;
     }
+    e = i;
+    // Select the first gcd between i & phi_n
     return e;
 }
 
@@ -99,7 +99,7 @@ int main(int argc, const char * argv[]) {
         cout << "The calculated n value is: " << obj1.Calculate_n() << endl;
         cout << "The calculated phi(n) value is: " << obj1.Calculate_nphi() << endl;
         cout << "The calculated value of e is: " << obj1.Calculate_e() << endl;
-        cout << obj1.Calculate_d() << endl;
+        cout << "The calculated value of d is: " << obj1.Calculate_d() << endl;
     } catch(runtime_error & s){
         cout << s.what() << endl;
     }
