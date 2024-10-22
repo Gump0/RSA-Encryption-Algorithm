@@ -7,6 +7,8 @@
 #include <vector>
 #include <numeric>
 
+#include "WriteData.h"
+
 using namespace std;
 
 class KeyGen {
@@ -19,7 +21,8 @@ public:
     unsigned e; // must be coprime with e & phi_n, 1 < e < phi_n
     unsigned d; // chose d so that this statement is true | d*e(mod phi_n) = 1
 
-    void InputPrompt();
+    void NumberInputPrompt();
+    void MessageInputPrompt();
     void PrimalityCheck();
     unsigned Calculate_n();
     unsigned Calculate_nphi();
@@ -27,11 +30,17 @@ public:
     unsigned Calculate_d();
 };
 
-void KeyGen::InputPrompt(){ // prompt the key generator to input two prime numbers
+void KeyGen::NumberInputPrompt(){ // prompt the key generator to input two prime numbers
     cout << "Please enter a prime number (Must be a positive whole number)..." << endl;
     cin >> p;
     cout << "Pretty please import another prime number?" << endl;
     cin >> q;
+}
+
+void KeyGen::MessageInputPrompt(){
+    cout << "Please enter a message: " << endl;
+    cin >> storedMessage;
+    cout << storedMessage << endl;
 }
 
 void KeyGen::PrimalityCheck(){ // check if p + q values are actually prime or not
@@ -92,14 +101,21 @@ unsigned KeyGen::Calculate_d(){
 }
 
 int main(int argc, const char * argv[]) {
+    WriteData writeData;
+
+    writeData.WriteEncryptedMessage();
+    writeData.WriteDecryptedMessage();
     try{
         KeyGen obj1;
-        obj1.InputPrompt();
+        obj1.NumberInputPrompt();
         obj1.PrimalityCheck();
         cout << "The calculated n value is: " << obj1.Calculate_n() << endl;
         cout << "The calculated phi(n) value is: " << obj1.Calculate_nphi() << endl;
         cout << "The calculated value of e is: " << obj1.Calculate_e() << endl;
         cout << "The calculated value of d is: " << obj1.Calculate_d() << endl;
+        // Eventually add the ability to write each value on a file
+        obj1.MessageInputPrompt();
+
     } catch(runtime_error & s){
         cout << s.what() << endl;
     }
