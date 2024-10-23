@@ -6,7 +6,7 @@
 
 class WriteData {
 public:
-    void WriteEncryptedMessage();
+    void WriteEncryptedMessage(const std::string& sentMessage);
     void WriteDecryptedMessage();
 };
 

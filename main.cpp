@@ -43,11 +43,11 @@ void KeyGen::MessageInputPrompt(){
     cout << storedMessage << endl;
 }
 
-void KeyGen::PrimalityCheck(){ // check if p + q values are actually prime or not
+void KeyGen::PrimalityCheck() { // check if p + q values are actually prime or not
     vector<unsigned> p_factors;
 
     for(unsigned i = 2; i <= static_cast<unsigned>(sqrt(p)); i++){
-        if(p % i == 0){ // check if i factors evenly into p, if so push_back i and p/i
+        if(p % i == 0) { // check if i factors evenly into p, if so push_back i and p/i
             p_factors.push_back(i);
             p_factors.push_back(p/i);
         }
@@ -56,7 +56,7 @@ void KeyGen::PrimalityCheck(){ // check if p + q values are actually prime or no
         vector<unsigned> q_factors;
 
     for(unsigned i = 2; i <= static_cast<unsigned>(sqrt(q)); i++){
-        if(q % i == 0){ // check if i factors evenly into q, if so push_back i and q/i
+        if(q % i == 0) { // check if i factors evenly into q, if so push_back i and q/i
             q_factors.push_back(i);
             q_factors.push_back(q/i);
         }
@@ -67,19 +67,19 @@ void KeyGen::PrimalityCheck(){ // check if p + q values are actually prime or no
     }
 }
 
-unsigned KeyGen::Calculate_n(){
+unsigned KeyGen::Calculate_n() {
     n = p * q;
     return n;
 }
 
-unsigned KeyGen::Calculate_nphi(){
+unsigned KeyGen::Calculate_nphi() {
     phi_n = (p-1)*(q-1);
     return phi_n;
 }
 
-unsigned KeyGen::Calculate_e(){
+unsigned KeyGen::Calculate_e() {
     unsigned i = 2;
-    while(i < phi_n){
+    while(i < phi_n) {
         if(gcd(i, phi_n) == 1)
         break;
     else i++;
@@ -89,7 +89,7 @@ unsigned KeyGen::Calculate_e(){
     return e;
 }
 
-unsigned KeyGen::Calculate_d(){ 
+unsigned KeyGen::Calculate_d() { 
 // remember that d needs to satisify the following equation.
 // d*e(mod phi_n) = 1
     unsigned k = 1;
@@ -103,8 +103,6 @@ unsigned KeyGen::Calculate_d(){
 int main(int argc, const char * argv[]) {
     WriteData writeData;
 
-    writeData.WriteEncryptedMessage();
-    writeData.WriteDecryptedMessage();
     try{
         KeyGen obj1;
         obj1.NumberInputPrompt();
@@ -115,8 +113,10 @@ int main(int argc, const char * argv[]) {
         cout << "The calculated value of d is: " << obj1.Calculate_d() << endl;
         // Eventually add the ability to write each value on a file
         obj1.MessageInputPrompt();
+        writeData.WriteEncryptedMessage(storedMessage);
+        // writeData.WriteDecryptedMessage();
 
-    } catch(runtime_error & s){
+    } catch(runtime_error & s) {
         cout << s.what() << endl;
     }
     return 0;
