@@ -37,9 +37,10 @@ void KeyGen::NumberInputPrompt(){ // prompt the key generator to input two prime
     cin >> q;
 }
 
-void KeyGen::MessageInputPrompt(){
+void KeyGen::MessageInputPrompt(){ // Patched message input skipping whitespaces
     cout << "Please enter a message: " << endl;
-    cin >> storedMessage;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
+    std::getline(std::cin, storedMessage);
     cout << storedMessage << endl;
 }
 
@@ -113,7 +114,7 @@ int main(int argc, const char * argv[]) {
         cout << "The calculated value of d is: " << obj1.Calculate_d() << endl;
         // Eventually add the ability to write each value on a file
         obj1.MessageInputPrompt();
-        writeData.WriteEncryptedMessage(storedMessage);
+        writeData.EncryptMessage(storedMessage);
         // writeData.WriteDecryptedMessage();
 
     } catch(runtime_error & s) {
