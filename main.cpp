@@ -30,14 +30,14 @@ public:
     unsigned Calculate_d();
 };
 
-void KeyGen::NumberInputPrompt(){ // prompt the key generator to input two prime numbers
+void KeyGen::NumberInputPrompt() { // prompt the key generator to input two prime numbers
     cout << "Please enter a prime number (Must be a positive whole number)..." << endl;
     cin >> p;
     cout << "Pretty please import another prime number?" << endl;
     cin >> q;
 }
 
-void KeyGen::MessageInputPrompt(){ // Patched message input skipping whitespaces
+void KeyGen::MessageInputPrompt() { // Patched message input skipping whitespaces
     cout << "Please enter a message: " << endl;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
     std::getline(std::cin, storedMessage);
@@ -114,7 +114,7 @@ int main(int argc, const char * argv[]) {
         cout << "The calculated value of d is: " << obj1.Calculate_d() << endl;
         // Eventually add the ability to write each value on a file
         obj1.MessageInputPrompt();
-        writeData.EncryptMessage(storedMessage);
+        writeData.EncryptMessage(storedMessage, obj1.e, obj1.n);
         // writeData.WriteDecryptedMessage();
 
     } catch(runtime_error & s) {
