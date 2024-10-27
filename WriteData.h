@@ -7,7 +7,7 @@
 class WriteData {
 public:
     void EncryptMessage(const std::string& sentMessage, int e, int n);
-    void DecryptMessage();
+    void DecryptMessage(const std::string& encryptedValues, int d, int n);
 
     void PureTextToASCII(const std::string& sentMessage);
     void AsciiToPureText(const std::string& sentMessage);
@@ -19,6 +19,6 @@ public:
 
 extern std::string storedMessage;
 extern std::string combinedAsciiValue;
-extern std:: string encryptedMessage;
+extern std::string encryptedMessage;
 
 #endif

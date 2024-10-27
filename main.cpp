@@ -66,9 +66,15 @@ void KeyGen::PrimalityCheck() { // check if p + q values are actually prime or n
     if(p_factors.size() != 0 || q_factors.size() !=0){
         throw (runtime_error("ERROR: Non prime input detected"));
     }
+
+    if(p * q <= 256) // n needs to be higher than 256 in order to correctly convert our values to ASCII
+        throw (runtime_error("ERROR: Inputted prime values are too low (any p and q value of 17 or higher should work)"));
+
+    if(p == q) // check if user has assigned the same value for p * q
+        throw (runtime_error("ERROR: Inputted prime numbers cannot be the same!"));
 }
 
-unsigned KeyGen::Calculate_n() {
+unsigned KeyGen::Calculate_n() { // n IS TOO SMALL, MAKE SURE ASCII VALUE DOES NOT EXCEED n VALUE
     n = p * q;
     return n;
 }
@@ -79,14 +85,22 @@ unsigned KeyGen::Calculate_nphi() {
 }
 
 unsigned KeyGen::Calculate_e() {
-    unsigned i = 2;
-    while(i < phi_n) {
-        if(gcd(i, phi_n) == 1)
-        break;
-    else i++;
+    unsigned defualt_values[] = {17, 41, 97, 257, 769, 1153, 2113, 4128, 12289, 65537}; // Common choices for e
+    for (unsigned val : defualt_values) {
+        if (gcd(val, phi_n) == 1) {
+            e = val;
+            return e;
+        }
     }
-    e = i;
-    // Select the first gcd between i & phi_n
+    // if traditional e values don't work, find first suitable value by incrementing from 2
+    unsigned i = 2;
+    while (i < phi_n) {
+        if (gcd(i, phi_n) == 1) {
+            e = i;
+            break;
+        }
+        i++;
+    }
     return e;
 }
 
@@ -115,8 +129,7 @@ int main(int argc, const char * argv[]) {
         // Eventually add the ability to write each value on a file
         obj1.MessageInputPrompt();
         writeData.EncryptMessage(storedMessage, obj1.e, obj1.n);
-        // writeData.WriteDecryptedMessage();
-
+        // writeData.DecryptMessage(encryptedMessage, obj1.d, obj1.n);
     } catch(runtime_error & s) {
         cout << s.what() << endl;
     }

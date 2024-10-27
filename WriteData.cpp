@@ -1,7 +1,6 @@
 #include "WriteData.h"
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <cmath>
 #include <sstream>
 
@@ -17,7 +16,6 @@ void WriteData::EncryptMessage(const std::string& sentMessage, int e, int n) {
 
     std::istringstream iss(combinedAsciiValue);
     std::string numberString;
-    std::vector<int> encryptedAsciiValues;
 
     while (iss >> numberString) { // Read each integer from the list of ASCII values
         int asciiInt = std::stoi(numberString); // convert string to int
@@ -45,8 +43,21 @@ int WriteData::ModulusExponent(int base, int exp, int mod) { // calculate encryp
     return static_cast<int>(result);
 }
 
-void WriteData::DecryptMessage() { //
-    // cout << "Calling method to decrypt msg: " << endl;
+void WriteData::DecryptMessage(const std::string& encryptedValues, int d, int n) { //
+    std::istringstream isd(encryptedValues);
+    std::string numberString;
+    numberString = "";
+
+    while (isd >> numberString) { // Read each integer from the list of ASCII values
+        int decryptedAsciiInt = std::stoi(numberString); // convert string to int
+        int decryptedInt = ModulusExponent(decryptedAsciiInt, d, n);
+
+        if(!encryptedMessage.empty())
+            encryptedMessage += " ";
+        encryptedMessage += to_string(decryptedInt);
+    }
+    // WriteToTXT(encryptedMessage);
+    cout << "Decrypted message: " << encryptedMessage << endl;
 }
 
 void WriteData::PureTextToASCII(const std::string& sentMessage) { // takes a string of characters and converts each character to a block of ASCII values
