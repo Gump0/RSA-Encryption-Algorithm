@@ -117,6 +117,7 @@ unsigned KeyGen::Calculate_d() {
 
 int main(int argc, const char * argv[]) {
     WriteData writeData;
+    int userd = 0;
 
     try{
         KeyGen obj1;
@@ -129,7 +130,9 @@ int main(int argc, const char * argv[]) {
         // Eventually add the ability to write each value on a file
         obj1.MessageInputPrompt();
         writeData.EncryptMessage(storedMessage, obj1.e, obj1.n);
-        // writeData.DecryptMessage(encryptedMessage, obj1.d, obj1.n);
+        cout << "Please enter a the correct d value..." << endl;
+        cin >> userd;
+        writeData.DecryptMessage(encryptedMessage, userd, obj1.n);
     } catch(runtime_error & s) {
         cout << s.what() << endl;
     }

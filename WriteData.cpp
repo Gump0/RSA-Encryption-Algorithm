@@ -9,6 +9,7 @@ using namespace std;
 std::string storedMessage = "";
 std::string combinedAsciiValue = "";
 std::string encryptedMessage = "";
+std::string decryptedMessage = "";
 long long block = 0; // Used in 'PureTextToASCII()' method
 
 void WriteData::EncryptMessage(const std::string& sentMessage, int e, int n) {
@@ -29,6 +30,22 @@ void WriteData::EncryptMessage(const std::string& sentMessage, int e, int n) {
     cout << "Encrypted message: " << encryptedMessage << endl;
 }
 
+void WriteData::DecryptMessage(const std::string& encryptedValues, int d, int n) { //
+    std::istringstream isd(encryptedValues);
+    std::string numberString;
+    numberString = "";
+
+    while (isd >> numberString) { // Read each integer from the list of ASCII values
+        int decryptedAsciiInt = std::stoi(numberString); // convert string to int
+        int decryptedInt = ModulusExponent(decryptedAsciiInt, d, n);
+
+        if(!decryptedMessage.empty())
+            decryptedMessage += " ";
+        decryptedMessage += to_string(decryptedInt);
+    }
+    AsciiToPureText(decryptedMessage);
+}
+
 int WriteData::ModulusExponent(int base, int exp, int mod) { // calculate encrypted value using modular exponentiation
     long long result = 1;
     long long baseMod = base % mod;
@@ -43,23 +60,6 @@ int WriteData::ModulusExponent(int base, int exp, int mod) { // calculate encryp
     return static_cast<int>(result);
 }
 
-void WriteData::DecryptMessage(const std::string& encryptedValues, int d, int n) { //
-    std::istringstream isd(encryptedValues);
-    std::string numberString;
-    numberString = "";
-
-    while (isd >> numberString) { // Read each integer from the list of ASCII values
-        int decryptedAsciiInt = std::stoi(numberString); // convert string to int
-        int decryptedInt = ModulusExponent(decryptedAsciiInt, d, n);
-
-        if(!encryptedMessage.empty())
-            encryptedMessage += " ";
-        encryptedMessage += to_string(decryptedInt);
-    }
-    // WriteToTXT(encryptedMessage);
-    cout << "Decrypted message: " << encryptedMessage << endl;
-}
-
 void WriteData::PureTextToASCII(const std::string& sentMessage) { // takes a string of characters and converts each character to a block of ASCII values
     for(int i = 0; i < sentMessage.length(); i++){ // convert each character in 'sentMessage' to ASCII value
         int asciiValue = static_cast<int>(sentMessage[i]);
@@ -72,7 +72,9 @@ void WriteData::PureTextToASCII(const std::string& sentMessage) { // takes a str
 }
 
 void WriteData::AsciiToPureText(const std::string& sentMessage) { // takes a block of ASCII number data and converts it back to readable text
-
+    
+    
+    cout << "Decrypted message: " << decryptedMessage << endl;
 }
 
 void WriteData::WriteToTXT(const std::string& messageToWrite) { 
