@@ -10,7 +10,7 @@ For this example, I use GNU/Linux's g++ compiler.
 
 Simply run the program in your terminal of choice and enjoy!
 ~~~
-git clone https://github.com/Gump0/Belyakov-Gleb_AdvTop24.git
+git clone https://github.com/Gump0/RSA-Encryption-Algorithm-Demonstration.git
 
 g++ main.cpp WriteData.cpp -o compile
 
