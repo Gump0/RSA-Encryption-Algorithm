@@ -41,7 +41,6 @@ void KeyGen::MessageInputPrompt() { // Patched message input skipping whitespace
     cout << "Please enter a message: " << endl;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear input buffer
     std::getline(std::cin, storedMessage);
-    cout << storedMessage << endl;
 }
 
 void KeyGen::PrimalityCheck() { // check if p + q values are actually prime or not

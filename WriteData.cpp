@@ -1,6 +1,7 @@
 #include "WriteData.h"
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <cmath>
 #include <sstream>
 
@@ -10,6 +11,7 @@ std::string storedMessage = "";
 std::string combinedAsciiValue = "";
 std::string encryptedMessage = "";
 std::string decryptedMessage = "";
+std::string decryptPlainText = "";
 long long block = 0; // Used in 'PureTextToASCII()' method
 
 void WriteData::EncryptMessage(const std::string& sentMessage, int e, int n) {
@@ -68,25 +70,38 @@ void WriteData::PureTextToASCII(const std::string& sentMessage) { // takes a str
             combinedAsciiValue += " "; // Add a space before the next value, except for the first
         combinedAsciiValue += std::to_string(asciiValue);
     }
-    cout << "Converted message to ASCII: " << combinedAsciiValue << endl;
 }
 
 void WriteData::AsciiToPureText(const std::string& sentMessage) { // takes a block of ASCII number data and converts it back to readable text
-    
-    
-    cout << "Decrypted message: " << decryptedMessage << endl;
+    std::istringstream ism(sentMessage);
+    std::string numberString;
+    std::string finalMessage;
+    std::vector<int> numbers;
+
+    while(ism >> numberString) {
+        int asciiValue = std::stoi(numberString); // convert string to int
+        numbers.push_back(asciiValue);
+    }
+
+    for(int n : numbers) {
+        char wordCharacter = static_cast<char>(n);
+        finalMessage += wordCharacter;
+    }
+
+    WriteToTXT(finalMessage);
+    cout << "Decrypted message." << endl;
 }
 
 void WriteData::WriteToTXT(const std::string& messageToWrite) { 
-    string filename = "secretmsg.txt";
+    string filename = "message.txt";
     ofstream outFile(filename);
     // Write secret message to .txt file
     if(outFile.is_open()) {
         outFile << messageToWrite;
         outFile.close();
-        cout << "Secret message written to 'secretmsg.txt': " << endl;
+        cout << "A message has been written to 'message.txt': " << endl;
     }
     else { 
-        cout << "ERROR: Secret message failed to write to file: " << endl;
+        cout << "ERROR: Message failed to write to file: " << endl;
     }
 }
